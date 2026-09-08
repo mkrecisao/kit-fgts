@@ -36,9 +36,9 @@ body {
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; }
 .logo-mark {
   width: 36px; height: 36px; border-radius: 10px;
-  display: grid; place-items: center;
-  background: linear-gradient(135deg, var(--orange), #ff5c00);
-  color: #140800; font-family: var(--display); font-size: 13px;
+  display: block; object-fit: cover;
+  background: #0a0f1c;
+  box-shadow: 0 0 0 1px rgba(255,138,31,.35);
 }
 .logo-text { font-family: var(--display); letter-spacing: -.02em; }
 .pill {
