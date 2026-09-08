@@ -310,8 +310,8 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
 .wa-fab {
   position: fixed;
   right: 16px;
-  bottom: 16px;
-  z-index: 80;
+  bottom: 96px; /* acima do popup social */
+  z-index: 90;
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -327,7 +327,10 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
 .wa-fab svg { width: 28px; height: 28px; display: block; }
 .wa-fab:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 @media (max-width: 420px) {
-  .wa-fab { right: 14px; bottom: 14px; width: 54px; height: 54px; }
+  .wa-fab { right: 14px; bottom: 92px; width: 54px; height: 54px; }
+}
+@media (min-width: 860px) {
+  .wa-fab { bottom: 16px; right: 16px; width: 56px; height: 56px; }
 }
 
 .helped-banner {
@@ -348,7 +351,7 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
 .social-toast {
   position: fixed;
   right: 16px;
-  bottom: 78px;
+  bottom: 16px; /* abaixo do botão WhatsApp */
   z-index: 70;
   display: flex; gap: 10px; align-items: center;
   width: min(280px, calc(100vw - 24px));
@@ -367,7 +370,7 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
   .social-toast { top: 72px; bottom: auto; right: 16px; }
 }
 @media (max-width: 420px) {
-  .social-toast { right: 10px; left: 10px; width: auto; max-width: none; bottom: 78px; top: auto; }
+  .social-toast { right: 10px; left: 10px; width: auto; max-width: none; bottom: 14px; top: auto; }
 }
 .st-avatar {
   width: 40px; height: 40px; border-radius: 50%;
