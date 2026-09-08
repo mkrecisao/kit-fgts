@@ -239,19 +239,54 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
 }
 
 .kits-nav {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 .kits-link {
-  text-decoration: none; font-size: 13px; font-weight: 600;
-  color: var(--muted); padding: 6px 12px; border-radius: 999px;
-  border: 1px solid var(--line); background: var(--bg2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: var(--bg2);
+  box-sizing: border-box;
 }
 .kits-link.is-on {
   color: #140800;
   background: linear-gradient(135deg, var(--orange2), var(--orange));
   border-color: transparent;
 }
-@media (max-width: 640px) {
-  .top { flex-wrap: wrap; gap: 10px; }
-  .kits-nav { width: 100%; justify-content: flex-end; }
+@media (max-width: 720px) {
+  .top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .kits-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .kits-nav .kits-link,
+  .kits-nav .pill {
+    flex: 1 1 auto;
+    text-align: center;
+    justify-content: center;
+  }
+}
+@media (min-width: 721px) {
+  .top {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
