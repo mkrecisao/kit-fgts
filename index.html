@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=20260908d" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0F1C'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='14' font-family='Arial' font-weight='700' fill='%23FF8A1F'%3EF%3C/text%3E%3C/svg%3E" />
 </head>
 <body>
@@ -30,7 +30,7 @@
       <h1>Seu FGTS sem enrolação: <span>sacar, consultar e lucro</span></h1>
       <p class="lead">Checklist objetivo do que dá pra sacar, como ver o saldo e o que muda no lucro do fundo — em linguagem simples.</p>
       <div class="hero-video">
-        <video controls playsinline preload="metadata" poster="" title="Apresentação do Kit FGTS">
+        <video controls autoplay muted playsinline loop preload="auto" title="Apresentação do Kit FGTS">
           <source src="apresentacao-kit-fgts.mp4" type="video/mp4" />
           Seu navegador não reproduz vídeo HTML5.
         </video>
@@ -163,6 +163,16 @@
         goCheckout();
       }
     });
+  </script>
+
+  <script>
+    (function () {
+      var v = document.querySelector(".hero-video video");
+      if (!v) return;
+      v.muted = true;
+      var p = v.play();
+      if (p && p.catch) p.catch(function () {});
+    })();
   </script>
 </body>
 </html>
