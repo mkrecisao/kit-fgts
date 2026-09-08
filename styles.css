@@ -290,3 +290,5 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
     justify-content: space-between;
   }
 }
+
+.offer-actions { display: grid; gap: 10px; margin-bottom: 4px; }
