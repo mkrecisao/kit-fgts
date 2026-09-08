@@ -329,3 +329,55 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
 @media (max-width: 420px) {
   .wa-fab { right: 14px; bottom: 14px; width: 54px; height: 54px; }
 }
+
+.helped-banner {
+  display: flex; gap: 12px; align-items: center;
+  margin-top: 18px; padding: 14px;
+  background: rgba(61,214,198,.08); border: 1px solid rgba(61,214,198,.22);
+  border-radius: 14px;
+}
+.helped-ico {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; flex: 0 0 36px;
+  background: rgba(61,214,198,.18); color: var(--cyan); font-weight: 800;
+}
+.helped-num { margin: 0; font-size: 14px; font-weight: 600; }
+.helped-num strong { color: var(--orange2); }
+.helped-sub { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+
+.social-toast {
+  position: fixed;
+  right: 16px;
+  bottom: 78px;
+  z-index: 70;
+  display: flex; gap: 10px; align-items: center;
+  width: min(280px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  padding: 10px 12px; border-radius: 14px;
+  background: rgba(13, 20, 36, 0.96);
+  border: 1px solid rgba(255,138,31,.35);
+  box-shadow: 0 12px 28px rgba(0,0,0,.4);
+  color: var(--text);
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events: none;
+}
+.social-toast.show { opacity: 1; transform: translateY(0); }
+@media (min-width: 860px) {
+  .social-toast { top: 72px; bottom: auto; right: 16px; }
+}
+@media (max-width: 420px) {
+  .social-toast { right: 10px; left: 10px; width: auto; max-width: none; bottom: 78px; top: auto; }
+}
+.st-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--orange2), var(--orange));
+  color: #140800; font-weight: 800; font-size: 16px;
+  display: grid; place-items: center; flex: 0 0 40px;
+}
+.st-title { margin: 0; font-size: 13px; font-weight: 800; }
+.st-sub { margin: 2px 0 0; font-size: 12px; color: var(--muted); line-height: 1.35; }
+.social-toast[data-kind="buy"] {
+  border-color: rgba(255,138,31,.55);
+}
+.social-toast[data-kind="buy"] .st-sub { color: var(--orange2); }
