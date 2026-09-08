@@ -237,3 +237,21 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
   background: var(--bg2);
   border-top: 1px solid var(--line);
 }
+
+.kits-nav {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+}
+.kits-link {
+  text-decoration: none; font-size: 13px; font-weight: 600;
+  color: var(--muted); padding: 6px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg2);
+}
+.kits-link.is-on {
+  color: #140800;
+  background: linear-gradient(135deg, var(--orange2), var(--orange));
+  border-color: transparent;
+}
+@media (max-width: 640px) {
+  .top { flex-wrap: wrap; gap: 10px; }
+  .kits-nav { width: 100%; justify-content: flex-end; }
+}
