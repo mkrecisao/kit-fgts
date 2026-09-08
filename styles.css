@@ -292,3 +292,17 @@ h2 { font-family: var(--display); letter-spacing: -.02em; margin: 0 0 16px; font
 }
 
 .offer-actions { display: grid; gap: 10px; margin-bottom: 4px; }
+
+.btn-wa, .btn-wa:link, .btn-wa:visited {
+  color: #fff !important;
+  background: #25D366 !important;
+  border: 1px solid #1ebe57 !important;
+  text-decoration: none !important;
+  box-shadow: 0 8px 22px rgba(37, 211, 102, .28);
+}
+.btn-wa:hover { filter: brightness(1.05); }
+.wa-help-link, .wa-help-link:link, .wa-help-link:visited {
+  color: #25D366 !important;
+  font-weight: 700;
+  text-decoration: underline;
+}
