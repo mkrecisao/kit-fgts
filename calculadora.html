@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora FGTS — Kit FGTS</title>
+  <meta name="description" content="Calcule estimativas de saque-aniversário, multa/rescisão e lucro do FGTS. Conteúdo informativo." />
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230A0F1C'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='14' font-family='Arial' font-weight='700' fill='%23FF8A1F'%3EF%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href="./" style="text-decoration:none;color:inherit">
+      <span class="logo-mark">FG</span>
+      <span class="logo-text">Kit FGTS</span>
+    </a>
+    <a class="pill" href="./#kit">Comprar kit</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Inclusa no kit · estimativa educativa</p>
+      <h1>Calculadora <span>FGTS</span></h1>
+      <p class="lead">Três simulações no celular: saque-aniversário (tabela oficial), estimativa de multa na rescisão e lucro/distribuição. Nada é enviado — tudo roda no seu aparelho.</p>
+      <ul class="trust-row">
+        <li>Sem cadastro</li>
+        <li>Sem guardar dados</li>
+        <li>Confirme no app FGTS</li>
+      </ul>
+    </section>
+
+    <section class="block calc-tabs" aria-label="Escolha a calculadora">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab is-on" data-tab="aniversario" role="tab" aria-selected="true">Saque-aniversário</button>
+        <button type="button" class="tab" data-tab="rescisao" role="tab" aria-selected="false">Rescisão</button>
+        <button type="button" class="tab" data-tab="lucro" role="tab" aria-selected="false">Lucro</button>
+      </div>
+
+      <div class="card calc-panel is-on" id="panel-aniversario" role="tabpanel">
+        <h2>Saque-aniversário</h2>
+        <p class="calc-hint">Soma de todas as contas × alíquota da faixa + parcela adicional (Lei 8.036/90 / Caixa).</p>
+        <label class="field">
+          <span>Saldo total do FGTS (R$)</span>
+          <input id="anivSaldo" type="text" inputmode="decimal" placeholder="Ex: 8500" autocomplete="off" />
+        </label>
+        <button type="button" class="btn btn-primary btn-block" id="anivBtn">Calcular saque</button>
+        <div class="result" id="anivResult" hidden>
+          <div class="result-main"><span>Estimativa do saque</span><strong id="anivValor">—</strong></div>
+          <ul class="result-meta" id="anivMeta"></ul>
+        </div>
+        <details class="calc-table">
+          <summary>Ver tabela de faixas</summary>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Faixa de saldo</th><th>Alíquota</th><th>Parcela</th></tr></thead>
+              <tbody>
+                <tr><td>Até R$ 500</td><td>50%</td><td>—</td></tr>
+                <tr><td>R$ 500,01 – 1.000</td><td>40%</td><td>+ R$ 50</td></tr>
+                <tr><td>R$ 1.000,01 – 5.000</td><td>30%</td><td>+ R$ 150</td></tr>
+                <tr><td>R$ 5.000,01 – 10.000</td><td>20%</td><td>+ R$ 650</td></tr>
+                <tr><td>R$ 10.000,01 – 15.000</td><td>15%</td><td>+ R$ 1.150</td></tr>
+                <tr><td>R$ 15.000,01 – 20.000</td><td>10%</td><td>+ R$ 1.900</td></tr>
+                <tr><td>Acima de R$ 20.000</td><td>5%</td><td>+ R$ 2.900</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+
+      <div class="card calc-panel" id="panel-rescisao" role="tabpanel" hidden>
+        <h2>Estimativa na rescisão</h2>
+        <p class="calc-hint">Cenário típico: demissão sem justa causa no saque-rescisão. Pedido de demissão, acordo e saque-aniversário mudam o resultado — confirme no app.</p>
+        <label class="field">
+          <span>Saldo FGTS do emprego (R$)</span>
+          <input id="rescSaldo" type="text" inputmode="decimal" placeholder="Ex: 4200" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span>Tipo de saída</span>
+          <select id="rescTipo">
+            <option value="sjc">Demissão sem justa causa</option>
+            <option value="acordo">Acordo (art. 484-A) — multa tipicamente 20%</option>
+            <option value="pedido">Pedido de demissão</option>
+            <option value="aniversario">Estou no saque-aniversário</option>
+          </select>
+        </label>
+        <button type="button" class="btn btn-primary btn-block" id="rescBtn">Calcular estimativa</button>
+        <div class="result" id="rescResult" hidden>
+          <div class="result-main"><span>Resumo estimado</span><strong id="rescTotal">—</strong></div>
+          <ul class="result-meta" id="rescMeta"></ul>
+        </div>
+      </div>
+
+      <div class="card calc-panel" id="panel-lucro" role="tabpanel" hidden>
+        <h2>Estimativa de lucro / distribuição</h2>
+        <p class="calc-hint">A Caixa publica o percentual efetivo a cada ano. Use o % oficial do comunicado ou um exemplo educativo.</p>
+        <label class="field">
+          <span>Saldo na data-base (R$)</span>
+          <input id="lucroSaldo" type="text" inputmode="decimal" placeholder="Ex: 10000" autocomplete="off" />
+        </label>
+        <label class="field">
+          <span>Percentual de distribuição (%)</span>
+          <input id="lucroPct" type="text" inputmode="decimal" placeholder="Ex: 5" autocomplete="off" />
+        </label>
+        <button type="button" class="btn btn-primary btn-block" id="lucroBtn">Calcular lucro estimado</button>
+        <div class="result" id="lucroResult" hidden>
+          <div class="result-main"><span>Crédito estimado</span><strong id="lucroValor">—</strong></div>
+          <ul class="result-meta" id="lucroMeta"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="card">
+        <h3 style="margin:0 0 8px">Aviso</h3>
+        <p style="margin:0;color:var(--muted);font-size:14px">Estimativas educativas. O valor oficial é o do app FGTS / Caixa. Esta página não acessa sua conta e não garante direito a saque.</p>
+      </div>
+    </section>
+
+    <section class="block offer" id="kit">
+      <div class="offer-card">
+        <p class="offer-tag">Kit completo</p>
+        <h2>PDF + esta calculadora</h2>
+        <p class="offer-desc">Guia com checklists, mapa de saque, anti-golpe e link permanente desta calculadora.</p>
+        <div class="price-row">
+          <span class="price">R$9,90</span>
+          <span class="price-note">PIX · PDF na hora</span>
+        </div>
+        <a class="btn btn-primary btn-block" id="ctaCheckout" href="https://pay.kiwify.com.br/J4Mo4My">Comprar com PIX — R$9,90</a>
+        <p class="fine"><a href="./" style="color:var(--cyan)">← Voltar à página do kit</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Kit FGTS · Calculadora informativa · Não substitui Caixa, gov.br ou advogado</p>
+  </footer>
+
+  <script>
+    const money = (n) => n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    function parseBR(v) {
+      if (v == null) return NaN;
+      let s = String(v).trim().replace(/\s/g, "");
+      if (!s) return NaN;
+      if (s.includes(",") && s.includes(".")) s = s.replace(/\./g, "").replace(",", ".");
+      else if (s.includes(",")) s = s.replace(",", ".");
+      const n = Number(s);
+      return Number.isFinite(n) ? n : NaN;
+    }
+
+    const FAIXAS = [
+      { max: 500, aliq: 0.5, extra: 0, label: "Até R$ 500 (50%)" },
+      { max: 1000, aliq: 0.4, extra: 50, label: "R$ 500,01–1.000 (40% + R$50)" },
+      { max: 5000, aliq: 0.3, extra: 150, label: "R$ 1.000,01–5.000 (30% + R$150)" },
+      { max: 10000, aliq: 0.2, extra: 650, label: "R$ 5.000,01–10.000 (20% + R$650)" },
+      { max: 15000, aliq: 0.15, extra: 1150, label: "R$ 10.000,01–15.000 (15% + R$1.150)" },
+      { max: 20000, aliq: 0.1, extra: 1900, label: "R$ 15.000,01–20.000 (10% + R$1.900)" },
+      { max: Infinity, aliq: 0.05, extra: 2900, label: "Acima de R$ 20.000 (5% + R$2.900)" },
+    ];
+
+    function faixaAniv(saldo) {
+      for (const f of FAIXAS) {
+        if (saldo <= f.max) return f;
+      }
+      return FAIXAS[FAIXAS.length - 1];
+    }
+
+    document.querySelectorAll(".tab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.tab;
+        document.querySelectorAll(".tab").forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle("is-on", on);
+          b.setAttribute("aria-selected", on ? "true" : "false");
+        });
+        document.querySelectorAll(".calc-panel").forEach((p) => {
+          const on = p.id === "panel-" + id;
+          p.classList.toggle("is-on", on);
+          p.hidden = !on;
+        });
+      });
+    });
+
+    document.getElementById("anivBtn").addEventListener("click", () => {
+      const saldo = parseBR(document.getElementById("anivSaldo").value);
+      const box = document.getElementById("anivResult");
+      const meta = document.getElementById("anivMeta");
+      if (!(saldo >= 0)) {
+        box.hidden = false;
+        document.getElementById("anivValor").textContent = "—";
+        meta.innerHTML = "<li>Informe um saldo válido.</li>";
+        return;
+      }
+      const f = faixaAniv(saldo);
+      const base = saldo * f.aliq;
+      const total = base + f.extra;
+      document.getElementById("anivValor").textContent = money(total);
+      meta.innerHTML = [
+        "<li>Faixa: " + f.label + "</li>",
+        "<li>Alíquota: " + money(base) + "</li>",
+        "<li>Parcela adicional: " + money(f.extra) + "</li>",
+        "<li>Confirme no app FGTS antes de decidir.</li>",
+      ].join("");
+      box.hidden = false;
+    });
+
+    document.getElementById("rescBtn").addEventListener("click", () => {
+      const saldo = parseBR(document.getElementById("rescSaldo").value);
+      const tipo = document.getElementById("rescTipo").value;
+      const box = document.getElementById("rescResult");
+      const meta = document.getElementById("rescMeta");
+      if (!(saldo >= 0)) {
+        box.hidden = false;
+        document.getElementById("rescTotal").textContent = "—";
+        meta.innerHTML = "<li>Informe um saldo válido.</li>";
+        return;
+      }
+      let titulo = "";
+      let lines = [];
+      let destaque = "—";
+      if (tipo === "sjc") {
+        const multa = saldo * 0.4;
+        const total = saldo + multa;
+        titulo = money(total);
+        lines = [
+          "Saldo FGTS (estimado liberável): " + money(saldo),
+          "Multa tipica 40% (empregador): " + money(multa),
+          "Total ilustrativo (saldo + multa): " + money(total),
+          "O pagamento da multa e do saque segue regras e prazos oficiais.",
+        ];
+      } else if (tipo === "acordo") {
+        const multa = saldo * 0.2;
+        titulo = money(saldo + multa);
+        lines = [
+          "Saldo: " + money(saldo) + " (saque conforme regras do acordo)",
+          "Multa tipica 20% no acordo 484-A: " + money(multa),
+          "Confirme no TRCT / papel do acerto o que realmente foi pago.",
+        ];
+      } else if (tipo === "pedido") {
+        titulo = money(0);
+        lines = [
+          "No pedido de demissão, em regra o FGTS NÃO é sacado pela demissão.",
+          "Saldo permanece na conta vinculada: " + money(saldo),
+          "Há exceções legais — confira a lista oficial da Caixa.",
+        ];
+      } else {
+        titulo = "Verificar no app";
+        lines = [
+          "No saque-aniversário, a demissão sem justa causa costuma liberar a multa, mas o saldo pode ficar bloqueado conforme a regra vigente.",
+          "Saldo informado: " + money(saldo),
+          "Não use só esta tela — leia o efeito atual no app FGTS / Caixa.",
+        ];
+      }
+      document.getElementById("rescTotal").textContent = titulo;
+      meta.innerHTML = lines.map((l) => "<li>" + l + "</li>").join("");
+      box.hidden = false;
+    });
+
+    document.getElementById("lucroBtn").addEventListener("click", () => {
+      const saldo = parseBR(document.getElementById("lucroSaldo").value);
+      const pct = parseBR(document.getElementById("lucroPct").value);
+      const box = document.getElementById("lucroResult");
+      const meta = document.getElementById("lucroMeta");
+      if (!(saldo >= 0) || !(pct >= 0)) {
+        box.hidden = false;
+        document.getElementById("lucroValor").textContent = "—";
+        meta.innerHTML = "<li>Informe saldo e percentual válidos.</li>";
+        return;
+      }
+      const credit = saldo * (pct / 100);
+      document.getElementById("lucroValor").textContent = money(credit);
+      meta.innerHTML = [
+        "<li>Fórmula: saldo × " + pct + "%</li>",
+        "<li>Use o % oficial do comunicado do ano.</li>",
+        "<li>Quem tinha saldo na data-base entra na regra publicada.</li>",
+      ].join("");
+      box.hidden = false;
+    });
+  </script>
+</body>
+</html>
