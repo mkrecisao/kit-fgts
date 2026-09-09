@@ -4,19 +4,19 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#070b14" />
-  <meta name="description" content="Pagamento confirmado — Kit FGTS. Seu PDF libera na Kiwify." />
+  <meta name="description" content="Pagamento confirmado — Kit FGTS. Baixe o PDF agora." />
   <meta name="robots" content="noindex" />
   <title>Obrigado — Kit FGTS</title>
   <link rel="icon" href="logo.png" type="image/png" />
   <meta property="og:title" content="Obrigado — Kit FGTS" />
-  <meta property="og:description" content="Pagamento confirmado. Seu PDF libera na Kiwify." />
+  <meta property="og:description" content="Pagamento confirmado. Baixe o PDF do Kit FGTS agora." />
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="pt_BR" />
   <meta property="og:url" content="https://mkrecisao.github.io/kit-fgts/obrigado.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260909obrigado" />
+  <link rel="stylesheet" href="styles.css?v=20260909pdf" />
   <style>
     .thanks-badge {
       width: 56px; height: 56px; border-radius: 16px;
@@ -34,12 +34,21 @@
       margin: 0 0 18px;
     }
     .thanks-card h2 { margin: 0 0 12px; font-size: 1.15rem; }
+    .pdf-fallback {
+      color: var(--muted); font-size: 14px; margin: 12px 0 0;
+      line-height: 1.55; text-align: center;
+    }
     .cross-sell {
       color: var(--muted); font-size: 14px; margin: 0;
       line-height: 1.55;
     }
     .cross-sell a { color: var(--orange2); font-weight: 600; }
     .sec-links { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0; }
+    .btn-pdf {
+      font-size: 1.1rem;
+      padding: 16px 22px;
+      box-shadow: 0 8px 28px rgba(255, 138, 31, .35);
+    }
   </style>
 </head>
 <body>
@@ -62,15 +71,19 @@
       <div class="thanks-badge" aria-hidden="true">✓</div>
       <p class="eyebrow">Pagamento confirmado</p>
       <h1>Obrigado!</h1>
-      <p class="lead">Seu pagamento foi confirmado. O PDF do <strong>Kit FGTS</strong> libera na Kiwify — pelo e-mail da compra e pela área do comprador.</p>
+      <p class="lead">Seu pagamento foi confirmado. Baixe agora o PDF do <strong>Kit FGTS</strong>.</p>
+      <p style="margin: 18px 0 0;">
+        <a class="btn btn-primary btn-block btn-pdf" href="kit-fgts.pdf" download="kit-fgts.pdf">Baixar PDF agora</a>
+      </p>
+      <p class="pdf-fallback">Se sair da página, o PDF também chega no e-mail / área do comprador da Kiwify.</p>
     </section>
 
     <section class="block">
       <div class="thanks-card">
         <h2>Próximos passos</h2>
         <ul class="checks">
-          <li>Veja o e-mail da Kiwify (também a pasta de spam)</li>
-          <li>Baixe o PDF na área do comprador da Kiwify</li>
+          <li>Baixe o PDF nesta página (botão laranja acima)</li>
+          <li>Se precisar depois: e-mail ou área do comprador da Kiwify</li>
           <li>Dúvidas? Chame no WhatsApp</li>
         </ul>
         <a class="btn btn-wa btn-block" href="https://wa.me/555197742550?text=Oi%21%20Acabei%20de%20comprar%20o%20Kit%20FGTS%20e%20preciso%20de%20ajuda" target="_blank" rel="noopener">Ajuda no WhatsApp</a>
