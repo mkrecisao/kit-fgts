@@ -9,8 +9,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260908wafab" />
+  <link rel="stylesheet" href="styles.css?v=20260909gerarpdf" />
   <link rel="icon" href="logo.png" type="image/png" />
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 </head>
 <body>
   <div class="glow" aria-hidden="true"></div>
@@ -56,6 +57,7 @@
         <div class="result" id="anivResult" hidden>
           <div class="result-main"><span>Estimativa do saque</span><strong id="anivValor">—</strong></div>
           <ul class="result-meta" id="anivMeta"></ul>
+          <button type="button" class="btn btn-primary btn-block" id="anivPdfBtn" style="margin-top:12px" hidden>Gerar PDF desta estimativa</button>
         </div>
         <details class="calc-table">
           <summary>Ver tabela de faixas</summary>
@@ -96,6 +98,7 @@
         <div class="result" id="rescResult" hidden>
           <div class="result-main"><span>Resumo estimado</span><strong id="rescTotal">—</strong></div>
           <ul class="result-meta" id="rescMeta"></ul>
+          <button type="button" class="btn btn-primary btn-block" id="rescPdfBtn" style="margin-top:12px" hidden>Gerar PDF desta estimativa</button>
         </div>
       </div>
 
@@ -114,6 +117,7 @@
         <div class="result" id="lucroResult" hidden>
           <div class="result-main"><span>Crédito estimado</span><strong id="lucroValor">—</strong></div>
           <ul class="result-meta" id="lucroMeta"></ul>
+          <button type="button" class="btn btn-primary btn-block" id="lucroPdfBtn" style="margin-top:12px" hidden>Gerar PDF desta estimativa</button>
         </div>
       </div>
     </section>
@@ -184,6 +188,57 @@
       return FAIXAS[FAIXAS.length - 1];
     }
 
+
+    const lastFgts = { aniv: null, resc: null, lucro: null };
+
+    function gerarPdfKitFgts(tabName, inputs, results, metaLines, faixa){
+      if(!window.jspdf || !window.jspdf.jsPDF){
+        alert("Biblioteca de PDF ainda carregando. Tente de novo.");
+        return;
+      }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: "mm", format: "a4" });
+      const W = doc.internal.pageSize.getWidth(), M = 14;
+      let y = 16;
+      const ink = [22,26,36], muted=[88,96,110], accent=[210,100,20], soft=[230,234,240], darkBg=[7,11,20];
+      function ensure(h){ if(y+h>285){ doc.addPage(); y=16; } }
+      function section(t){ ensure(10); doc.setFillColor(...soft); doc.roundedRect(M,y-4,W-M*2,8,1.5,1.5,"F"); doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(...accent); doc.text(t,M+2,y+1.5); y+=8; }
+      function row(l,v){ ensure(6); doc.setFont("helvetica","normal"); doc.setFontSize(9.5); doc.setTextColor(...muted); doc.text(String(l),M+1,y); doc.setTextColor(...ink); doc.setFont("helvetica","bold"); doc.text(String(v),W-M-1,y,{align:"right"}); y+=5.4; }
+      function para(t){ ensure(8); doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(...muted); const lines=doc.splitTextToSize(t,W-M*2-2); doc.text(lines,M+1,y); y+=lines.length*3.8+2; }
+
+      doc.setFillColor(...darkBg); doc.rect(0,0,W,26,"F");
+      doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(14);
+      doc.text("Kit FGTS — estimativa personalizada", M, 11);
+      doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor(170,182,198);
+      doc.text("Aba: "+tabName+"  ·  Gerado em "+new Date().toLocaleString("pt-BR",{timeZone:"America/Sao_Paulo"}), M, 18);
+      y = 34;
+
+      section("Dados informados");
+      inputs.forEach(function(p){ row(p[0], p[1]); });
+      y += 2;
+      section("Resultado desta estimativa");
+      results.forEach(function(p){ row(p[0], p[1]); });
+      if(faixa){ y+=1; row("Faixa usada", faixa); }
+      if(metaLines && metaLines.length){
+        y += 2;
+        section("Detalhes");
+        metaLines.forEach(function(line){
+          ensure(6);
+          doc.setFont("helvetica","normal"); doc.setFontSize(8.5); doc.setTextColor(...ink);
+          const lines = doc.splitTextToSize("• "+line, W-M*2-2);
+          doc.text(lines, M+1, y);
+          y += lines.length*4 + 1;
+        });
+      }
+      y += 2;
+      section("Aviso");
+      para("Estimativa educativa gerada na calculadora Kit FGTS. O valor oficial é o do app FGTS / Caixa. Esta página não acessa sua conta e não garante direito a saque. Confirme sempre no app antes de decidir.");
+      doc.setFontSize(7); doc.setTextColor(...muted);
+      doc.text("Kit FGTS · mkrecisao.github.io/kit-fgts · PDF gerado no seu aparelho", M, 290);
+      const slug = tabName.toLowerCase().replace(/\s+/g,"-").replace(/[^a-z0-9\-]/g,"");
+      doc.save("kit-fgts-"+slug+".pdf");
+    }
+
     document.querySelectorAll(".tab").forEach((btn) => {
       btn.addEventListener("click", () => {
         const id = btn.dataset.tab;
@@ -208,19 +263,32 @@
         box.hidden = false;
         document.getElementById("anivValor").textContent = "—";
         meta.innerHTML = "<li>Informe um saldo válido.</li>";
+        const anivPdf = document.getElementById("anivPdfBtn");
+        if(anivPdf) anivPdf.hidden = true;
+        lastFgts.aniv = null;
         return;
       }
       const f = faixaAniv(saldo);
       const base = saldo * f.aliq;
       const total = base + f.extra;
       document.getElementById("anivValor").textContent = money(total);
-      meta.innerHTML = [
-        "<li>Faixa: " + f.label + "</li>",
-        "<li>Alíquota: " + money(base) + "</li>",
-        "<li>Parcela adicional: " + money(f.extra) + "</li>",
-        "<li>Confirme no app FGTS antes de decidir.</li>",
-      ].join("");
+      const anivLines = [
+        "Faixa: " + f.label,
+        "Alíquota: " + money(base),
+        "Parcela adicional: " + money(f.extra),
+        "Confirme no app FGTS antes de decidir.",
+      ];
+      meta.innerHTML = anivLines.map(function(l){ return "<li>"+l+"</li>"; }).join("");
       box.hidden = false;
+      lastFgts.aniv = {
+        tab: "Saque-aniversário",
+        inputs: [["Saldo total do FGTS", money(saldo)]],
+        results: [["Estimativa do saque", money(total)], ["Base (alíquota)", money(base)], ["Parcela adicional", money(f.extra)]],
+        meta: anivLines,
+        faixa: f.label
+      };
+      const anivPdf = document.getElementById("anivPdfBtn");
+      if(anivPdf) anivPdf.hidden = false;
     });
 
     document.getElementById("rescBtn").addEventListener("click", () => {
@@ -232,6 +300,9 @@
         box.hidden = false;
         document.getElementById("rescTotal").textContent = "—";
         meta.innerHTML = "<li>Informe um saldo válido.</li>";
+        const rescPdf = document.getElementById("rescPdfBtn");
+        if(rescPdf) rescPdf.hidden = true;
+        lastFgts.resc = null;
         return;
       }
       let titulo = "";
@@ -273,6 +344,16 @@
       document.getElementById("rescTotal").textContent = titulo;
       meta.innerHTML = lines.map((l) => "<li>" + l + "</li>").join("");
       box.hidden = false;
+      const tipoLabel = document.getElementById("rescTipo").selectedOptions[0].textContent;
+      lastFgts.resc = {
+        tab: "Rescisão",
+        inputs: [["Saldo FGTS do emprego", money(saldo)], ["Tipo de saída", tipoLabel]],
+        results: [["Resumo estimado", titulo]],
+        meta: lines,
+        faixa: null
+      };
+      const rescPdf = document.getElementById("rescPdfBtn");
+      if(rescPdf) rescPdf.hidden = false;
     });
 
     document.getElementById("lucroBtn").addEventListener("click", () => {
@@ -284,16 +365,42 @@
         box.hidden = false;
         document.getElementById("lucroValor").textContent = "—";
         meta.innerHTML = "<li>Informe saldo e percentual válidos.</li>";
+        const lucroPdf = document.getElementById("lucroPdfBtn");
+        if(lucroPdf) lucroPdf.hidden = true;
+        lastFgts.lucro = null;
         return;
       }
       const credit = saldo * (pct / 100);
       document.getElementById("lucroValor").textContent = money(credit);
-      meta.innerHTML = [
-        "<li>Fórmula: saldo × " + pct + "%</li>",
-        "<li>Use o % oficial do comunicado do ano.</li>",
-        "<li>Quem tinha saldo na data-base entra na regra publicada.</li>",
-      ].join("");
+      const lucroLines = [
+        "Fórmula: saldo × " + pct + "%",
+        "Use o % oficial do comunicado do ano.",
+        "Quem tinha saldo na data-base entra na regra publicada.",
+      ];
+      meta.innerHTML = lucroLines.map(function(l){ return "<li>"+l+"</li>"; }).join("");
       box.hidden = false;
+      lastFgts.lucro = {
+        tab: "Lucro / distribuição",
+        inputs: [["Saldo na data-base", money(saldo)], ["Percentual de distribuição", pct + "%"]],
+        results: [["Crédito estimado", money(credit)]],
+        meta: lucroLines,
+        faixa: null
+      };
+      const lucroPdf = document.getElementById("lucroPdfBtn");
+      if(lucroPdf) lucroPdf.hidden = false;
+    });
+
+    document.getElementById("anivPdfBtn").addEventListener("click", function(){
+      const d = lastFgts.aniv; if(!d) return;
+      gerarPdfKitFgts(d.tab, d.inputs, d.results, d.meta, d.faixa);
+    });
+    document.getElementById("rescPdfBtn").addEventListener("click", function(){
+      const d = lastFgts.resc; if(!d) return;
+      gerarPdfKitFgts(d.tab, d.inputs, d.results, d.meta, d.faixa);
+    });
+    document.getElementById("lucroPdfBtn").addEventListener("click", function(){
+      const d = lastFgts.lucro; if(!d) return;
+      gerarPdfKitFgts(d.tab, d.inputs, d.results, d.meta, d.faixa);
     });
   </script>
 
